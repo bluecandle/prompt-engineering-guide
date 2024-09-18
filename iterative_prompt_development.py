@@ -1,3 +1,4 @@
+from openai import OpenAI
 import openai
 import os
 
@@ -8,14 +9,19 @@ API_KEY = os.environ['apiKey']
 # openai.api_key  = os.getenv('apiKey')
 client = OpenAI(api_key=API_KEY)
 
-def get_completion(prompt, model="gpt-3.5-turbo"):
+def get_completion(prompt, model="gpt-4o"):
     messages = [{"role": "user", "content": prompt}]
-    response = openai.ChatCompletion.create(
+    # response = openai.ChatCompletion.create(
+    #     model=model,
+    #     messages=messages,
+    #     temperature=0, # this is the degree of randomness of the model's output
+    # )
+    response = client.chat.completions.create(
         model=model,
         messages=messages,
         temperature=0, # this is the degree of randomness of the model's output
     )
-    return response.choices[0].message["content"]
+    return response.choices[0].message.content
 
 fact_sheet_chair = """
 OVERVIEW
